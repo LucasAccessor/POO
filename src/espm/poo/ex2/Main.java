@@ -29,7 +29,7 @@ public class Main {
             } else if ("del".equals(input)) {
                 throw new UnsupportedOperationException();
             } else if ("find".equals(input)) {
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException(); //throw new UnsupportedOperationException(); lança a exceção
             } else {
                 System.err.println("Comando invalido.");
             }

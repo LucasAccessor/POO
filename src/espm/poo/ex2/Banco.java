@@ -26,6 +26,7 @@ public class Banco {
 
     public void addCliente(Cliente c) {
         this.clientes.add(c);
+        this.contas.add(c.getConta());
     }
 
     public String getNome() {
