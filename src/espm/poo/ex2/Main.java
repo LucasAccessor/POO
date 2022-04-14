@@ -55,21 +55,74 @@ public class Main {
     }
 
     private static void listCustomers(Banco banco) {
-        banco.getClientes().forEach(c -> System.out.println(c));
+        /*banco.getClientes().forEach(c -> {     //método antigo
+            String tp = c instanceof PessoaFisica ? "F" : "J";
+            System.out.println(tp + " " + c);
+        }); */
+        banco.getClientes().forEach(c ->{   //casting
+            if(c instanceof PessoaFisica){
+                PessoaFisica pf = (PessoaFisica) (c);
+                System.out.println(pf);
+            } else if (c instanceof PessoaJuridica) {
+                PessoaJuridica pj = (PessoaJuridica) (c);
+                System.out.println(pj);
+            }
+        });
     }
 
     private static void addCustomer(Banco banco) {
+        
         Scanner scan = new Scanner(System.in);
         System.out.print("Nome: ");
         String nome = scan.nextLine();
-        System.out.print("CPF.: ");
-        String cpf = scan.nextLine();
 
-        Cliente c = new Cliente();
+        TipoPessoa tipoPessoa = inputTipoCliente();
+        // String tipoPessoa =  scan.nextLine().toUpperCase();
+
+        
+        Cliente c = null;
+
+        switch (tipoPessoa) {
+            case Fisica:
+                System.out.println("Pessoa Física");
+                System.out.println("CPF.: ");
+                String cpf = scan.nextLine();
+
+                PessoaFisica pf = new PessoaFisica();
+                pf.setCpf(cpf);
+                c = pf;
+
+                break;
+            
+            case Juridica:
+                System.out.println("Pessoa Jurídica");
+                System.out.println("CNPJ.: ");
+                String cnpj = scan.nextLine();
+
+                PessoaJuridica pj = new PessoaJuridica();
+                pj.setCnpj(cnpj);
+                c = pj;
+
+                break;
+        }
+        
         c.setNome(nome);
-        //c.setCpf(cpf);
-
         banco.addCliente(c);
+
+        
+    }
+
+    private static TipoPessoa inputTipoCliente() {
+        Scanner scan = new Scanner(System.in);
+        String tp = "";
+        while(!tp.equals("J") && !tp.equals("F")){
+            System.out.println("Tipo do cliente [F|J]: ");
+            tp = scan.nextLine().toUpperCase();
+            if(!tp.equals("J") && !tp.equals("F")){
+                System.err.println("F: Física | J: Juridica");
+            }
+        }
+        return tp.equals("F") ? TipoPessoa.Fisica : TipoPessoa.Juridica;
     }
     
 }
